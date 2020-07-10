@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 
+use AppBundle\Exception\NotAbuffetException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -34,7 +35,19 @@ class Enclosure
 
     public function addDinosaur(Dinosaur $dinosaur)
     {
+        if (!$this->canAddDinosaur($dinosaur)){
+            throw new NotAbuffetException();
+        }
         $this->dinosaurs[] = $dinosaur;
+    }
+
+    private function canAddDinosaur(Dinosaur $dinosaur): bool
+    {
+        return
+            count($this->dinosaurs) == 0
+            ||
+            $this->dinosaurs->first()->isCarnivorous() == $dinosaur->isCarnivorous()
+        ;
     }
 
 }
