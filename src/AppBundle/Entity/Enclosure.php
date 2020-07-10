@@ -4,6 +4,7 @@
 namespace AppBundle\Entity;
 
 
+use AppBundle\Exception\DinosaursAreRunningRampantException;
 use AppBundle\Exception\NotAbuffetException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,10 +20,19 @@ class Enclosure
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Dinosaur", mappedBy="enclosure", cascade={"presist"})
      */
     private $dinosaurs;
+    /**
+     * @var ArrayCollection|Security[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Security", mappedBy="enclosure", cascade={"presist"})
+     */
+    private $securities;
 
-    public function __construct()
+    public function __construct(bool $basicSecurity = false)
     {
         $this->dinosaurs = new ArrayCollection();
+        $this->securities = new ArrayCollection();
+        if ($basicSecurity){
+            $this->addSecurity(new Security('Fence', true, $this));
+        }
     }
 
     /**
@@ -38,7 +48,26 @@ class Enclosure
         if (!$this->canAddDinosaur($dinosaur)){
             throw new NotAbuffetException();
         }
+        if (!$this->isSecutrityActive()){
+            throw new DinosaursAreRunningRampantException('Are you craaaazy?!?');
+        }
         $this->dinosaurs[] = $dinosaur;
+    }
+
+    public function isSecutrityActive(): bool
+    {
+        foreach ($this->securities as $security){
+            if ($security->getIsActive()){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public function addSecurity(Security $security)
+    {
+        $this->securities[] = $security;
     }
 
     private function canAddDinosaur(Dinosaur $dinosaur): bool
