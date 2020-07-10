@@ -10,6 +10,9 @@ use PHPUnit\Framework\TestCase;
 
 class DinosaurFactoryTest extends TestCase
 {
+    /**
+     * @var DinosaurFactory
+     */
     private $factory;
 
     public function setUp()
@@ -45,6 +48,7 @@ class DinosaurFactoryTest extends TestCase
     public function testItGrowsADinosaurFromSpecification(string $spec, bool $expectdIsLarge, bool $expectedIsCarnivorous)
     {
         $dinasour = $this->factory->growFromSpecification($spec);
+
         if ($expectdIsLarge){
             $this->assertGreaterThanOrEqual(Dinosaur::LARGE,$dinasour->getLength());
         }else{
@@ -56,10 +60,32 @@ class DinosaurFactoryTest extends TestCase
 
     public function getSpecificationTests()
     {
-        // specification, is large, is carnivorous
-        ['large carnevorous dinosaur', true, true];
-        ['get mi all the cookies', false, false];
-        ['large herbivore', true, false];
+        return [
+            // specification, is large, is carnivorous
+            ['large carnivorous dinosaur', true, true],
+            'default values' => ['get me all the cookies', false, false],
+            ['large herbivore', true, false]
+        ];
     }
 
+    /**
+     * @dataProvider getHugeDinosaurSpecTests
+     */
+    public function testItGrowsAhugeDinosaur(string $specification)
+    {
+        $dinosaur = $this->factory->growFromSpecification($specification);
+        $this->assertGreaterThanOrEqual(Dinosaur::HUGE, $dinosaur->getLength());
+    }
+
+    public function getHugeDinosaurSpecTests()
+    {
+        return [
+            // specification, is large, is carnivorous
+            ['huge herbivore'],
+            ['huge dinosaur'],
+            ['huge dino'],
+            ['huge'],
+            ['OMG'],
+        ];
+    }
 }
