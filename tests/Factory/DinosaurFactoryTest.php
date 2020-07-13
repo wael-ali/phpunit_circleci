@@ -15,11 +15,15 @@ class DinosaurFactoryTest extends TestCase
      * @var DinosaurFactory
      */
     private $factory;
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject
+     */
+    private $lengthDeterminator;
 
     public function setUp()
     {
-        $dinosaurLengthDeterminator = $this->createMock(DinosaurLengthDeterminator::class);
-        $this->factory = new DinosaurFactory($dinosaurLengthDeterminator);
+        $this->lengthDeterminator = $this->createMock(DinosaurLengthDeterminator::class);
+        $this->factory = new DinosaurFactory($this->lengthDeterminator);
     }
     public function testItGrowsAVelociaraptor()
     {
@@ -49,8 +53,11 @@ class DinosaurFactoryTest extends TestCase
      */
     public function testItGrowsADinosaurFromSpecification(string $spec, bool $expectedIsCarnivorous)
     {
+        $this->lengthDeterminator->method('getLengthFromSpecification')
+        ->willReturn(20);
         $dinasour = $this->factory->growFromSpecification($spec);
         $this->assertSame($expectedIsCarnivorous,$dinasour->isCarnivorous());
+        $this->assertSame(20,$dinasour->getLength());
     }
 
     public function getSpecificationTests()
