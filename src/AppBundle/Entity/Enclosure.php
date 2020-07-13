@@ -8,6 +8,7 @@ use AppBundle\Exception\DinosaursAreRunningRampantException;
 use AppBundle\Exception\NotAbuffetException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\This;
 
 /**
  * @ORM\Entity
@@ -77,6 +78,11 @@ class Enclosure
             ||
             $this->dinosaurs->first()->isCarnivorous() == $dinosaur->isCarnivorous()
         ;
+    }
+
+    public function getSecurities(): ArrayCollection
+    {
+        return $this->securities;
     }
 
 }
