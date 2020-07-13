@@ -6,6 +6,7 @@ namespace Tests\Factory;
 
 use AppBundle\Entity\Dinosaur;
 use AppBundle\Factory\DinosaurFactory;
+use AppBundle\Service\DinosaurLengthDeterminator;
 use PHPUnit\Framework\TestCase;
 
 class DinosaurFactoryTest extends TestCase
@@ -17,7 +18,8 @@ class DinosaurFactoryTest extends TestCase
 
     public function setUp()
     {
-        $this->factory = new DinosaurFactory();
+        $dinosaurLengthDeterminator = $this->createMock(DinosaurLengthDeterminator::class);
+        $this->factory = new DinosaurFactory($dinosaurLengthDeterminator);
     }
     public function testItGrowsAVelociaraptor()
     {
@@ -45,16 +47,9 @@ class DinosaurFactoryTest extends TestCase
     /**
      * @dataProvider getSpecificationTests
      */
-    public function testItGrowsADinosaurFromSpecification(string $spec, bool $expectdIsLarge, bool $expectedIsCarnivorous)
+    public function testItGrowsADinosaurFromSpecification(string $spec, bool $expectedIsCarnivorous)
     {
         $dinasour = $this->factory->growFromSpecification($spec);
-
-        if ($expectdIsLarge){
-            $this->assertGreaterThanOrEqual(Dinosaur::LARGE,$dinasour->getLength());
-        }else{
-            $this->assertLessThan(Dinosaur::LARGE,$dinasour->getLength());
-        }
-
         $this->assertSame($expectedIsCarnivorous,$dinasour->isCarnivorous());
     }
 
@@ -62,30 +57,9 @@ class DinosaurFactoryTest extends TestCase
     {
         return [
             // specification, is large, is carnivorous
-            ['large carnivorous dinosaur', true, true],
-            'default values' => ['get me all the cookies', false, false],
-            ['large herbivore', true, false]
-        ];
-    }
-
-    /**
-     * @dataProvider getHugeDinosaurSpecTests
-     */
-    public function testItGrowsAhugeDinosaur(string $specification)
-    {
-        $dinosaur = $this->factory->growFromSpecification($specification);
-        $this->assertGreaterThanOrEqual(Dinosaur::HUGE, $dinosaur->getLength());
-    }
-
-    public function getHugeDinosaurSpecTests()
-    {
-        return [
-            // specification, is large, is carnivorous
-            ['huge herbivore'],
-            ['huge dinosaur'],
-            ['huge dino'],
-            ['huge'],
-            ['OMG'],
+            ['large carnivorous dinosaur',  true],
+            'default values' => ['get me all the cookies', false],
+            ['large herbivore',  false]
         ];
     }
 }
