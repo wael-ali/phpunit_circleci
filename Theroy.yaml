@@ -12,9 +12,17 @@ chapter_03:
 
     How much should I be testing my code??!!!!!:
 
-        Does every function need a unit test? Does every page and every validation error of every form need a functional test? Absolutely not! That sounds worse than a raptor claw across a chalkboard!
+        Does every function need a unit test? Does every page and every validation error of
+        every form need a functional test? Absolutely not! That sounds worse than a raptor
+        claw across a chalkboard!
 
-        Especially if you're new to testing, don't worry; a few tests is way better than none. And honestly, I think many people create too many tests. I follow a simple rule; if it scares me, I test it. Too many tests take extra time, add little value, and slow you down later when they fail after you've made a minor change.
+        Especially if you're new to testing, a few tests is way better than none. And honestly,
+        I think many people create too many tests. I follow a simple rule; if it scares me,
+        I test it.
+        Too many tests:
+            - take extra time,
+            - add little value,
+            - and slow you down later when they fail after you've made a minor change.
 
     Test-Driven Development or TDD:
 
@@ -22,3 +30,23 @@ chapter_03:
             First, create the test.
             Second, write the minimum amount of code to get that test to pass.
             And third, now that your tests are passing, you can safely refactor your code to make it fancier.
+
+    phpunit_cli:
+        command1: 'phpunit -h'
+            desc: 'show the help'
+        command2: 'phpunit --debug'
+            desc: 'run the tests with the debug mode'
+        command3: 'phpunit --filter the_test_name'
+            desc: 'run only one test'
+        command4: 'phpunit --filter the_test_name --debug'
+            desc: 'runs one test in the debug mode'
+        command5: "phpunit --filter test_name 'test_name #test_case_index' --debug"
+            desc: 'if test has data provider you kann run one data set by definning it #test_case_index after the test name but between singl quates in command'
+        command6: "phpunit --filter test_name 'test_name @test_cast_special_name' --debug"
+            desc: 'if test has data provider you kann run one data case by definning it #test_case_name after the test name but between singl quates in command'
+        command7: 'phpunit --stope-on-failure --stop-on-error'
+            desc: 'stop the tests if failure or error occurs not run the test after them'
+        command8: 'phpunit --testsuite suite_name --debug'
+            desc: 'runs only the tests under this suite name'
+            note: 'the suite name should be configured in the phpunit.xml.dist file suite+directory'
+
