@@ -50,3 +50,19 @@ chapter_03:
             desc: 'runs only the tests under this suite name'
             note: 'the suite name should be configured in the phpunit.xml.dist file suite+directory'
 
+##### Integration Tests ####
+        notes:
+            - Test classes should extends the KernelTestCase
+            - in tests boot the symfony kernel using self::bootKernel()
+            - get the symfony container to get the services you need to test.
+                slef::$kernel->getContainer()->get(service_name)
+            - - error(You have requested a non-existent service): because the services in container are
+                private, you need to confgiure them public in the test environment.
+            - - sulotion:
+                    - open app/config/config_test.yml
+                    - under services key add default and public to true,then create service alias
+                    services:
+                        _defaults:
+                            public: true
+
+                        test.the_service_id: '@the_service_id'

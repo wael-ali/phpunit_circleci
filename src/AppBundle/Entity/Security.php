@@ -39,6 +39,7 @@ class Security
         $this->enclosure = $enclosure;
     }
 
+
     public function getIsActive(): bool
     {
         return $this->isActive;

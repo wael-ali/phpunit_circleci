@@ -8,7 +8,6 @@ use AppBundle\Exception\DinosaursAreRunningRampantException;
 use AppBundle\Exception\NotAbuffetException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\This;
 
 /**
  * @ORM\Entity
@@ -17,13 +16,19 @@ use phpDocumentor\Reflection\Types\This;
 class Enclosure
 {
     /**
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+    /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Dinosaur", mappedBy="enclosure", cascade={"presist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Dinosaur", mappedBy="enclosure", cascade={"persist"})
      */
     private $dinosaurs;
     /**
      * @var ArrayCollection|Security[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Security", mappedBy="enclosure", cascade={"presist"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Security", mappedBy="enclosure", cascade={"persist"})
      */
     private $securities;
 
@@ -53,6 +58,7 @@ class Enclosure
             throw new DinosaursAreRunningRampantException('Are you craaaazy?!?');
         }
         $this->dinosaurs[] = $dinosaur;
+        $dinosaur->setEnclosure($this);
     }
 
     public function isSecutrityActive(): bool

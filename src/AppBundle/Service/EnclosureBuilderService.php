@@ -59,11 +59,11 @@ class EnclosureBuilderService
     {
         $lengths = ['small', 'large', 'huge'];
         $diets = ['herbivore', 'carnivorous'];
+        $diet = $diets[array_rand($diets)];
 
         for ($i = 0; $i < $numberOfDinosaurs; $i++){
             // We should not mix herbivore and carnivorous together,
             // so use the same diet for every dinosaur.
-            $diet = $diets[array_rand($diets)];
 
             $length = $lengths[array_rand($lengths)];
             $specification = "{$length} {$diet} dinosaur";
