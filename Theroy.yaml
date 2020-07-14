@@ -66,3 +66,19 @@ chapter_03:
                             public: true
 
                         test.the_service_id: '@the_service_id'
+
+##### Clearing the Database #####
+        notes_2:
+            symfony4: you should add config/packages/test/doctrine.yaml
+            symfony3: in config_test.yml add the following
+                doctrine:
+                    dbal:
+                        url: 'sqlite:///%kernel.project_dir%/var/data/test.sqlite'
+                        whysqlite:
+                            - simple to set up.
+                            - use some tricks to speed your test.
+            tip1:
+                use_fixtures: composer require doctrine/data-fixtures --dev
+                why_use_fixtures: it has an entity purger, make nice,
+                but: if you have two entites that have forign key refering to each other may cause a problem.
+                and: use this purger in the test setUp so the  purge database before every test
