@@ -14,5 +14,8 @@ class DefaultControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/');
 
         $this->assertStatusCode(200, $client);
+
+        $table = $crawler->filter('.table-enclosure');
+        $this->assertCount(3, $table->filter('tbody tr'));
     }
 }

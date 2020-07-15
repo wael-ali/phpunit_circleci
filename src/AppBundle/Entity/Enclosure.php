@@ -91,4 +91,16 @@ class Enclosure
         return $this->securities;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getDinosaurCount(): int
+    {
+        return $this->dinosaurs->count();
+    }
 }
