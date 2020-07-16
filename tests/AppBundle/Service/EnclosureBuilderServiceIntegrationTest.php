@@ -20,7 +20,8 @@ class EnclosureBuilderServiceIntegrationTest extends KernelTestCase
         $this->clearDatabase();
     }
 
-    public function testItBuildsEnclosureWithDefaultSpecification()
+//    public function testItBuildsEnclosureWithDefaultSpecification()
+    public function iItBuildsEnclosureWithDefaultSpecification()
     {
         /** @var EnclosureBuilderService $enclosureBuilderService */
 //        $enclosureBuilderService = self::$kernel->getContainer()
