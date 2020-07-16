@@ -51,7 +51,8 @@ jobs:
       # prepare the database
       #- run: touch storage/testing.sqlite
       - run: mkdir var/data
-      #- run: php artisan migrate --env=testing --database=sqlite_testing --force
+      #- run: ./bin/console doctrine:schema:create
+      - run: php artisan migrate --env=testing --database=sqlite_testing --force
 
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
