@@ -9,6 +9,7 @@ use AppBundle\Entity\Security;
 use AppBundle\Factory\DinosaurFactory;
 use AppBundle\Service\EnclosureBuilderService;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
@@ -58,7 +59,11 @@ class EnclosureBuilderServiceIntegrationTest extends KernelTestCase
     private function clearDatabase()
     {
        $purger = new ORMPurger($this->getEntityManager());
-       $purger->purge();
+       try{
+        $purger->purge();
+       }catch (TableNotFoundException $exception){
+            dump($exception->getMessage());
+       }
     }
 
     /**

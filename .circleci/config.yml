@@ -51,7 +51,6 @@ jobs:
       # prepare the database
       #- run: touch storage/testing.sqlite
       - run: mkdir var/data
-      - run: ./bin/console doctrine:schema:create
 
       # run tests with phpunit or codecept
       - run: ./vendor/bin/phpunit --log-junit ~/phpunit/junit.xml
