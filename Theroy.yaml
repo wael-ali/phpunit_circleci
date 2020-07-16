@@ -1,0 +1,121 @@
+chapter_03:
+
+    3 types of Tests:
+
+        UNIT TEST:
+            Test one specific function on a class.
+            Fake any needed database connections.
+        INTEGRATION TEST:
+            Just Like a unit test Except it uses the real database connection!
+        FUNCTIONAL TEST:
+            Write a test to programmatically command a browser.
+
+    How much should I be testing my code??!!!!!:
+
+        Does every function need a unit test? Does every page and every validation error of
+        every form need a functional test? Absolutely not! That sounds worse than a raptor
+        claw across a chalkboard!
+
+        Especially if you're new to testing, a few tests is way better than none. And honestly,
+        I think many people create too many tests. I follow a simple rule; if it scares me,
+        I test it.
+        Too many tests:
+            - take extra time,
+            - add little value,
+            - and slow you down later when they fail after you've made a minor change.
+
+    Test-Driven Development or TDD:
+
+        TDD breaks coding into three steps:
+            First, create the test.
+            Second, write the minimum amount of code to get that test to pass.
+            And third, now that your tests are passing, you can safely refactor your code to make it fancier.
+
+    phpunit_cli:
+        command1: 'phpunit -h'
+            desc: 'show the help'
+        command2: 'phpunit --debug'
+            desc: 'run the tests with the debug mode'
+        command3: 'phpunit --filter the_test_name'
+            desc: 'run only one test'
+        command4: 'phpunit --filter the_test_name --debug'
+            desc: 'runs one test in the debug mode'
+        command5: "phpunit --filter test_name 'test_name #test_case_index' --debug"
+            desc: 'if test has data provider you can run one data set by defining it #test_case_index after the test name but between single q in command'
+        command6: "phpunit --filter test_name 'test_name @test_cast_special_name' --debug"
+            desc: 'if test has data provider you can run one data case by defining it #test_case_name after the test name but between single quates in command'
+        command7: 'phpunit --stop-on-failure --stop-on-error'
+            desc: 'stop the tests if failure or error occurs not run the test after them'
+        command8: 'phpunit --testsuite suite_name --debug'
+            desc: 'runs only the tests under this suite name'
+            note: 'the suite name should be configured in the phpunit.xml.dist file suite+directory'
+
+##### Integration Tests ####
+        notes:
+            - Test classes should extends the KernelTestCase
+            - in tests boot the symfony kernel using self::bootKernel()
+            - get the symfony container to get the services you need to test.
+                slef::$kernel->getContainer()->get(service_name)
+            - - error(You have requested a non-existent service): because the services in container are
+                private, you need to confgiure them public in the test environment.
+            - - sulotion:
+                    - open app/config/config_test.yml
+                    - under services key add default and public to true,then create service alias
+                    services:
+                        _defaults:
+                            public: true
+
+                        test.the_service_id: '@the_service_id'
+
+    ### Clearing the Database ###
+        notes_2:
+            symfony4: you should add config/packages/test/doctrine.yaml
+            symfony3: in config_test.yml add the following
+                doctrine:
+                    dbal:
+                        url: 'sqlite:///%kernel.project_dir%/var/data/test.sqlite'
+                        whysqlite:
+                            - simple to set up.
+                            - use some tricks to speed your test.
+            tip1:
+                use_fixtures: composer require doctrine/data-fixtures --dev
+                why_use_fixtures: it has an entity purger, make nice,
+                but: if you have two entites that have forign key refering to each other may cause a problem.
+                and: use this purger in the test setUp so the  purge database before every test
+
+    Testing_a_class_logic:
+        does_this_class_scare_me: dont test simple classes
+        can_I_unit_test_this_class: if I mock all dependencies is the logic still testable
+        class_can_not_be_unit_tested: go for integration test
+
+##### Functional Tests #####
+    phpunit_&_integration_Tests:
+        - call methods on our code
+        - test the outpu of those methodes
+    functional_Tests:
+        - command a browser
+        - browser surfs to your site, clicks links, fills out forms and
+        - assert things it sees in the page
+        - "Testing the interface that your users actually use!"
+        functional_test_alos_apply_for_API:
+            - use an http client to make real http requests to your API and assert the output
+
+    browserkit__VS__mink:
+        ________________________: BrowserKit            Mink
+
+        makes_real_http_requests:   no                    yes
+        no_host_configuration:      yes                   no
+        tests_js_functionality:     no                    yes
+
+Recomendations:
+    - Create base test class for both integration/functional tests and
+        use a trait to share code between them.
+
+    Liip_bundle_tricks:
+        1: if you use the sqlite it builds the schema for you automaticaly
+            when you load the fixtures it creates the schema too.
+        2: in config_test.yml change it as follows
+            liip_functional_test:
+                chache_sqlite_db: true
+        - whenever you  loadfixtures it caches the database file
+            every time you loadfixtures with the same farguments it uses the cached database file.
