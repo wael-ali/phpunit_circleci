@@ -91,7 +91,7 @@ class Dinosaur
     /**
      * @param mixed $enclosure
      */
-    public function setEnclosure($enclosure)
+    public function setEnclosure(Enclosure $enclosure)
     {
         $this->enclosure = $enclosure;
     }

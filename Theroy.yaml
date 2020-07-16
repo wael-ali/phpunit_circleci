@@ -106,3 +106,16 @@ chapter_03:
         makes_real_http_requests:   no                    yes
         no_host_configuration:      yes                   no
         tests_js_functionality:     no                    yes
+
+Recomendations:
+    - Create base test class for both integration/functional tests and
+        use a trait to share code between them.
+
+    Liip_bundle_tricks:
+        1: if you use the sqlite it builds the schema for you automaticaly
+            when you load the fixtures it creates the schema too.
+        2: in config_test.yml change it as follows
+            liip_functional_test:
+                chache_sqlite_db: true
+        - whenever you  loadfixtures it caches the database file
+            every time you loadfixtures with the same farguments it uses the cached database file.
